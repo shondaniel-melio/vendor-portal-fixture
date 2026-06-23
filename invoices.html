@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoices</title>
+    <link rel="stylesheet" href="styles.css">
+    <script>
+        // Protect the page
+        if (sessionStorage.getItem('auth') !== 'true') {
+            window.location.href = 'index.html';
+        }
+        
+        function logout() {
+            sessionStorage.removeItem('auth');
+            window.location.href = 'index.html';
+        }
+    </script>
+</head>
+<body>
+    <header class="top-bar">
+        <h1>Invoices</h1>
+        <a href="#" onclick="logout()" class="logout-link">Logout</a>
+    </header>
+
+    <main class="table-container">
+        <table id="invoiceTable">
+            <thead>
+                <tr>
+                    <th>Vendor name</th>
+                    <th>Invoice number</th>
+                    <th>Invoice date</th>
+                    <th>Due date</th>
+                    <th>Amount</th>
+                    <th>Note/status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                </tbody>
+        </table>
+    </main>
+
+    <script>
+        const tbody = document.querySelector('#invoiceTable tbody');
+        const today = new Date();
+        
+        // Helper to format dates as YYYY-MM-DD
+        const formatDate = (dateObj) => {
+            const y = dateObj.getFullYear();
+            const m = String(dateObj.getMonth() + 1).padStart(2, '0');
+            const d = String(dateObj.getDate()).padStart(2, '0');
+            return `${y}-${m}-${d}`;
+        };
+
+        // Generate 61 invoices: -30 days to +30 days
+        for (let i = -30; i <= 30; i++) {
+            const invDate = new Date(today);
+            invDate.setDate(today.getDate() + i);
+            
+            const dueDate = new Date(invDate);
+            dueDate.setDate(invDate.getDate() + 14);
+
+            const invNum = 'INV-' + String(i + 31).padStart(4, '0');
+            const amountVal = (100 + (Math.abs(i) * 15.50)).toFixed(2);
+            const amountStr = '$' + amountVal;
+            
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>Acme Utilities Inc.</td>
+                <td>${invNum}</td>
+                <td>${formatDate(invDate)}</td>
+                <td>${formatDate(dueDate)}</td>
+                <td>${amountStr}</td>
+                <td>Issued</td>
+                <td><a href="invoice.html?id=${invNum}&date=${formatDate(invDate)}&due=${formatDate(dueDate)}&amount=${amountVal}">View Details</a></td>
+            `;
+            tbody.appendChild(tr);
+        }
+    </script>
+</body>
+</html>
