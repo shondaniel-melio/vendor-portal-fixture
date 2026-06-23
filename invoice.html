@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice Details</title>
+    <link rel="stylesheet" href="styles.css">
+    <script>
+        if (sessionStorage.getItem('auth') !== 'true') {
+            window.location.href = 'index.html';
+        }
+    </script>
+</head>
+<body>
+    <div class="nav-bar">
+        <a href="invoices.html">&larr; Back to Invoices</a>
+    </div>
+
+    <main class="invoice-document" id="printable-invoice">
+        
+        <div class="invoice-header">
+            <h2>INVOICE</h2> <a href="sample-invoice.pdf" download class="pdf-btn">Download PDF</a>
+        </div>
+
+        <div class="parties">
+            <div class="vendor">
+                <strong>Tech Solutions Ltd.</strong> <br>
+                123 Innovation Drive <br>
+                Tel Aviv, Israel <br>
+                Contact: Alex Rivera <br>
+                Email: info@techsolutions.com </div>
+            <div class="client">
+                <strong>BILL TO:</strong> <br>
+                Future Corp <br>
+                456 Business Ave <br>
+                Jerusalem, Israel <br>
+                Email: contact@futurecorp.com </div>
+        </div>
+
+        <div class="meta-data">
+            <p><strong>Invoice No:</strong> <span id="dyn-id"></span></p>
+            <p><strong>Invoice Date:</strong> <span id="dyn-date"></span></p>
+            <p><strong>Due Date:</strong> <span id="dyn-due"></span></p>
+        </div>
+
+        <table class="line-items">
+            <thead>
+                <tr>
+                    <th>Description</th> <th>Amount</th> </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Dynamic Agent Services</td>
+                    <td id="dyn-amount"></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="payment-info">
+            <strong>Payment Instructions:</strong> <br>
+            Bank: Bank Leumi <br>
+            IBAN: IL620108000000012345678 </div>
+        
+        <p class="footer-note">Thank you for your business!</p> </main>
+    <script>
+        // Read parameters from URL and inject into template
+        const params = new URLSearchParams(window.location.search);
+        document.getElementById('dyn-id').textContent = params.get('id') || 'N/A';
+        document.getElementById('dyn-date').textContent = params.get('date') || 'N/A';
+        document.getElementById('dyn-due').textContent = params.get('due') || 'N/A';
+        document.getElementById('dyn-amount').textContent = '$' + (params.get('amount') || '0.00');
+    </script>
+</body>
+</html>
