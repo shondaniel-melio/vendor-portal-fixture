@@ -26,15 +26,26 @@
     </main>
 
     <script>
+        // Clear any existing session data on load to ensure a fresh start
+        sessionStorage.clear();
+
         document.getElementById('loginForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const user = document.getElementById('username').value;
             const pass = document.getElementById('password').value;
             
             if (user === 'admin' && pass === 'admin') {
+                // Path 1: Direct access (No MFA)
                 sessionStorage.setItem('auth', 'true');
                 window.location.href = 'invoices.html';
+                
+            } else if (user === 'admin2' && pass === 'admin2') {
+                // Path 2: Requires MFA
+                sessionStorage.setItem('preAuth', 'true');
+                window.location.href = 'mfa.html';
+                
             } else {
+                // Path 3: Invalid credentials
                 document.getElementById('errorMsg').classList.remove('hidden');
             }
         });
