@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Invoice Details</title>
     <link rel="stylesheet" href="styles.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script>
         if (sessionStorage.getItem('auth') !== 'true') {
             window.location.href = 'index.html';
@@ -20,7 +19,7 @@
     <main class="invoice-document" id="printable-invoice">
 
         <div class="invoice-header">
-            <h2>INVOICE</h2> <a href="#" onclick="downloadInvoicePdf(); return false;" class="pdf-btn">Download PDF</a>
+            <h2>INVOICE</h2> <a href="#" id="pdf-link" download class="pdf-btn">Download PDF</a>
         </div>
 
         <div class="parties">
@@ -76,48 +75,10 @@
         document.getElementById('dyn-due').textContent = invDue;
         document.getElementById('dyn-amount').textContent = '$' + invAmount;
 
-        // Each invoice gets its own PDF with the invoice-specific fields baked into
-        // the content, so a document-extraction/dedup pipeline sees distinct files
-        // per invoice instead of one identical PDF reused for every row.
-        function downloadInvoicePdf() {
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF();
-
-            doc.setFontSize(20);
-            doc.text('INVOICE', 20, 20);
-
-            doc.setFontSize(11);
-            doc.text('Tech Solutions Ltd.', 20, 35);
-            doc.text('123 Innovation Drive', 20, 41);
-            doc.text('Tel Aviv, Israel', 20, 47);
-            doc.text('Contact: Alex Rivera', 20, 53);
-            doc.text('Email: info@techsolutions.com', 20, 59);
-
-            doc.text('BILL TO:', 120, 35);
-            doc.text('Future Corp', 120, 41);
-            doc.text('456 Business Ave', 120, 47);
-            doc.text('Jerusalem, Israel', 120, 53);
-            doc.text('Email: contact@futurecorp.com', 120, 59);
-
-            doc.text('Invoice No: ' + invId, 20, 75);
-            doc.text('Invoice Date: ' + invDate, 20, 82);
-            doc.text('Due Date: ' + invDue, 20, 89);
-
-            doc.text('Description', 20, 105);
-            doc.text('Amount', 160, 105);
-            doc.line(20, 108, 190, 108);
-            doc.text('Dynamic Agent Services', 20, 115);
-            doc.text('$' + invAmount, 160, 115);
-
-            doc.text('Payment Instructions:', 20, 135);
-            doc.text('Bank: Bank Leumi', 20, 141);
-            doc.text('IBAN: IL620108000000012345678', 20, 147);
-
-            doc.setFontSize(10);
-            doc.text('Thank you for your business!', 105, 170, { align: 'center' });
-
-            doc.save('Invoice-' + invId + '.pdf');
-        }
+        // Each invoice links to its own pre-generated static PDF (see
+        // scripts/generate-invoice-pdfs.js) so the file is a real, directly
+        // fetchable resource per invoice rather than one file shared by all rows.
+        document.getElementById('pdf-link').href = 'pdfs/Invoice-' + invId + '.pdf';
     </script>
 </body>
 </html>
