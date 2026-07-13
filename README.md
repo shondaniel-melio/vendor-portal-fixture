@@ -21,7 +21,7 @@ In `invoice.html`, look for the large comment block titled `TEMPLATE INJECTION Z
 1. Delete the placeholder HTML inside the box.
 2. Paste your own invoice formatting/branding.
 3. Keep the specific `<span>` tags with the IDs `dyn-id`, `dyn-date`, `dyn-due`, and `dyn-amount`. The JavaScript at the bottom of the file reads URL search parameters from `invoices.html` and injects the dynamic values into these exact IDs.
-4. To add a static PDF, update the `href=""` inside the `<a class="pdf-btn">` tag in the template block to point to your provided PDF file (e.g., `href="Adjusted_Invoice.pdf"`).
+4. The "Download PDF" button calls `downloadInvoicePdf()`, which generates a PDF on the fly (via jsPDF) with that row's own invoice number/date/amount baked into the content — each invoice gets a distinct file rather than everyone sharing one static PDF.
 
 ## How to Publish on GitHub Pages
 1. Create a new repository on GitHub.
