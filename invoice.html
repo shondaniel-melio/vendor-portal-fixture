@@ -17,9 +17,9 @@
     </div>
 
     <main class="invoice-document" id="printable-invoice">
-
+        
         <div class="invoice-header">
-            <h2>INVOICE</h2> <a href="#" id="pdf-link" download class="pdf-btn">Download PDF</a>
+            <h2>INVOICE</h2> <a href="Adjusted_Invoice.pdf" download class="pdf-btn">Download PDF</a>
         </div>
 
         <div class="parties">
@@ -65,20 +65,10 @@
     <script>
         // Read parameters from URL and inject into template
         const params = new URLSearchParams(window.location.search);
-        const invId = params.get('id') || 'N/A';
-        const invDate = params.get('date') || 'N/A';
-        const invDue = params.get('due') || 'N/A';
-        const invAmount = params.get('amount') || '0.00';
-
-        document.getElementById('dyn-id').textContent = invId;
-        document.getElementById('dyn-date').textContent = invDate;
-        document.getElementById('dyn-due').textContent = invDue;
-        document.getElementById('dyn-amount').textContent = '$' + invAmount;
-
-        // Each invoice links to its own pre-generated static PDF (see
-        // scripts/generate-invoice-pdfs.js) so the file is a real, directly
-        // fetchable resource per invoice rather than one file shared by all rows.
-        document.getElementById('pdf-link').href = 'pdfs/Invoice-' + invId + '.pdf';
+        document.getElementById('dyn-id').textContent = params.get('id') || 'N/A';
+        document.getElementById('dyn-date').textContent = params.get('date') || 'N/A';
+        document.getElementById('dyn-due').textContent = params.get('due') || 'N/A';
+        document.getElementById('dyn-amount').textContent = '$' + (params.get('amount') || '0.00');
     </script>
 </body>
 </html>
