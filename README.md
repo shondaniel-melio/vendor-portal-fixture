@@ -10,6 +10,7 @@ The portal simulates a basic login gateway.
 For MFA login:
 * **Username:** `admin2`
 * **Password:** `admin2`
+* **MFA code:** `1234567`
 
 Login is verified client-side using JavaScript. Upon success, a `sessionStorage` flag (`auth=true`) is created. If an agent attempts to access `invoices.html` or `invoice.html` without this flag, it will be forcefully redirected to `index.html`.
 
